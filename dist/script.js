@@ -1,0 +1,2 @@
+"use strict";var fadeEl=document.querySelector(".fade-in"),heroText=document.querySelector(".hero__text"),words=["more efficient","faster","easier"],count=0;function changeWord(){count===words.length&&(count=0),heroText.innerHTML='\n    Recording your physical store sales have never been <span class="fade-in">'.concat(words[count],"</span> with RetailRecord\n    "),count++}fadeEl&&setTimeout((function(){setInterval(changeWord,5e3)}),2e3);
+//# sourceMappingURL=script.js.map

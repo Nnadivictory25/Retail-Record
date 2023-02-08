@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retail Record - Home</title>
+
+
+  <!-- custom stylesheet + script -->
+  <link rel="stylesheet" href="/dist/style.css">
+  <script defer src="/dist/script.js"></script>
+
+  <!-- favicon img -->
+  <link rel="shortcut icon" href="/images/favicon-rr.png" type="image/x-icon">
+
+  <!-- bootstrap icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+  <!-- google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body class="overflow-x-hidden ">
+  
+  <header class="relative pb-20">
+    <a href="/" class="logo absolute top-[-1.3rem] lg:left-14">
+      <img class="w-32" src="/images/RetailReco-mainLogo.png" alt="Retail Record Logo">
+    </a>
+
+    <nav>
+      <a href="/sign-up" class="nav-link absolute right-10 top-6 font-semibold text-white bg-black rounded p-2 px-3">Get Started</a>
+    </nav>
+  </header>
+  
+  <section class="contactUs px-5 lg:px-20 mt-12">
+    <h1 class="text-center">Send us a message</h1>
+
+    <form action="#" class="form mt-10" id="form" method="POST">
+        <input type="text" name="full-name" id="fullName" class="input" placeholder="Full Name" required minlength="4">
+
+        <input type="email" name="email" id="email" class="input" placeholder="Email" required >
+
+        <textarea name="message" id="message" cols="30" rows="5" class="input" required placeholder="Message" minlength="5"></textarea>
+
+        <button disabled class="button mt-8">Send Message <i class="bi bi-send-fill"></i></button>
+    </form>
+  </section>
+
+</body>
+ 
+</html>

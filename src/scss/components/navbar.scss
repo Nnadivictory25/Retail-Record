@@ -1,0 +1,18 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+@use '../util/mixins.scss' as *;
+
+.logo {
+    &:hover {
+        opacity: 1 !important;
+    }
+}
+nav {
+    a {
+        @include transition(opacity);
+        
+        &:hover {
+            opacity: .6;
+        }
+    }
+}

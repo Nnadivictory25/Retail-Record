@@ -1,0 +1,16 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+
+// This is where mixins will be created . 
+
+@mixin transition($prop: all) {
+    transition: $prop .2s ease-in-out !important;
+}
+
+@mixin aLink {
+    @include transition(opacity);
+        
+    &:hover {
+        opacity: .6;
+    }
+}

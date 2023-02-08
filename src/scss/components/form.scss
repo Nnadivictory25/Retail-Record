@@ -1,0 +1,33 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+@use '../util/mixins.scss' as *;
+
+.form {
+    width: min(95%, rem(450));
+    margin-inline: auto;
+
+    input,
+    textarea {
+        @include transition;
+
+        &:focus {
+            outline: 1px solid black;
+        }
+
+        &:not(:first-child) {
+            margin-top: 2rem !important;
+        }
+    }
+
+    button {
+        @include transition(opacity);
+
+        &:hover {
+            opacity: .8;
+        }
+
+        &:disabled {
+            opacity: .2;
+        }
+    }
+}
