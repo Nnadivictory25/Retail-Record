@@ -21,12 +21,18 @@ if (heroText) {
 }
 
 const validateInput = () => {
-  if (inputs.some((input) => input.value == "")) {
+  if (
+    inputs.some((input) => input.value == "")
+  ) {
     btn.disabled = true;
   } else {
     btn.disabled = false;
   }
 };
+
+function checkRecaptcha() {
+  btn.disabled = false;
+}
 
 if (window.location.href.includes("contact")) {
   const form = document.querySelector("#form");
@@ -36,16 +42,26 @@ if (window.location.href.includes("contact")) {
   });
 
   form.addEventListener("submit", (e) => {
+    grecaptcha.enterprise.ready(function () {
+      grecaptcha.enterprise
+        .execute("6LfzDUYkAAAAAExZEJBrJLkpVVdJjL2D6quRu0E9", {
+          action: "sendForm",
+        })
+        .then(function (token) {
+          console.log(token);
+          document.querySelector("#g-response").value = token;
+        });
+    });
     e.preventDefault();
-      btn.innerHTML = `Sending <i class="bi bi-send-fill"></i>`;
-      btn.disabled = true
+    btn.innerHTML = `Sending <i class="bi bi-send-fill"></i>`;
+    btn.disabled = true;
     emailjs.sendForm("service_0f19o8c", "template_m1ot4np", form).then(
       function (response) {
         console.log("SUCCESS!", response.status, response.text);
       },
       function (error) {
         alert("Something went wrong! Please try again.");
-        window.location.reload();
+        // window.location.reload();
         console.log("FAILED...", error);
       }
     );
