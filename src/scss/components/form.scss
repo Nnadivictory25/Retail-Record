@@ -28,6 +28,7 @@
 
         &:disabled {
             opacity: .2;
+            pointer-events: none;
         }
     }
 }

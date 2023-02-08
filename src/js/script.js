@@ -1,5 +1,7 @@
 const fadeEl = document.querySelector(".fade-in");
 const heroText = document.querySelector(".hero__text");
+const inputs = Array.from(document.querySelectorAll(".input"));
+const btn = document.querySelector("button");
 const words = ["more efficient", "faster", "easier"];
 let count = 0;
 
@@ -18,20 +20,34 @@ if (heroText) {
   }, 2000);
 }
 
-if (document.querySelector(".input")) {
-  const inputs = Array.from(document.querySelectorAll(".input"));
-  const btn = document.querySelector("button");
+const validateInput = () => {
+  if (inputs.some((input) => input.value == "")) {
+    btn.disabled = true;
+  } else {
+    btn.disabled = false;
+  }
+};
+
+if (window.location.href.includes("contact")) {
   const form = document.querySelector("#form");
 
   inputs.forEach((input) => {
     input.addEventListener("keyup", validateInput);
   });
 
-  const validateInput = () => {
-    if (inputs.some((input) => input.value == "")) {
-      btn.disabled = true;
-    } else {
-      btn.disabled = false;
-    }
-  }
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+      btn.innerHTML = `Sending <i class="bi bi-send-fill"></i>`;
+      btn.disabled = true
+    emailjs.sendForm("service_0f19o8c", "template_m1ot4np", form).then(
+      function (response) {
+        console.log("SUCCESS!", response.status, response.text);
+      },
+      function (error) {
+        alert("Something went wrong! Please try again.");
+        window.location.reload();
+        console.log("FAILED...", error);
+      }
+    );
+  });
 }
