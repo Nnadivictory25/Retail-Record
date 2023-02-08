@@ -60,7 +60,7 @@ if (window.location.href.includes("contact")) {
         console.log("SUCCESS!", response.status, response.text);
       },
       function (error) {
-        alert("Something went wrong! Please try again.");
+        alert("Something went wrong! Please try again.", error);
         // window.location.reload();
         console.log("FAILED...", error);
       }
