@@ -47,7 +47,7 @@
     <section class="contactUs px-5 lg:px-20 mt-12">
         <h1 class="text-center">Send us a message</h1>
 
-        <form action="#" class="form mt-10" id="form" method="POST">
+        <form action="#" class="form mt-10" id="form" method="POST" autocomplete="off">
             <input type="text" name="full-name" id="fullName" class="input" placeholder="Full Name" required
                 minlength="4">
 
@@ -56,11 +56,10 @@
             <textarea name="message" id="message" cols="30" rows="5" class="input mb-2" required placeholder="Message"
                 minlength="5"></textarea>
 
-            <input id="g-response" class="input" type="text" style="display: none !important;"
-                name="g-recaptcha-response">
+            <textarea name="g-recaptcha-response" id="g-response" cols="30" rows="30" style="display: none !important;"></textarea>
             <div class="g-recaptcha" id="recaptcha" data-callback="checkRecaptcha" data-action="sendForm"></div>
             <br />
-            <button disabled class="button mt-3 mb-4">Send Message <i class="bi bi-send-fill"></i></button>
+            <button disabled class="button mt-3 mb-4" type="submit">Send Message <i class="bi bi-send-fill"></i></button>
         </form>
     </section>
 
@@ -69,7 +68,10 @@
 
 
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("BBHK4CoORgSaMhZIR");
+   })();
 </script>
-
 </html>

@@ -5,8 +5,6 @@ const btn = document.querySelector("button");
 const words = ["more efficient", "faster", "easier"];
 let count = 0;
 
-
-
 function changeWord() {
   if (count === words.length) {
     count = 0;
@@ -36,16 +34,13 @@ function checkRecaptcha() {
 
 if (window.location.href.includes("contact")) {
   let mainWidget;
-  var verifyCallback = function (response) {
-    alert(response);
-  };
   var onloadCallback = function () {
     mainWidget = grecaptcha.enterprise.render("recaptcha", {
       sitekey: " 6LfzDUYkAAAAAExZEJBrJLkpVVdJjL2D6quRu0E9",
     });
   };
-  const form = document.querySelector("#form");
   let token;
+  const form = document.querySelector("#form");
 
   inputs.forEach((input) => {
     input.addEventListener("keyup", validateInput);
@@ -53,32 +48,49 @@ if (window.location.href.includes("contact")) {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    token = grecaptcha.enterprise.getResponse(mainWidget);
-    console.log(token);
+    // token = grecaptcha.enterprise.getResponse(mainWidget);
     btn.innerHTML = `Sending <i class="bi bi-send-fill"></i>`;
     btn.disabled = true;
 
-    var data = {
-      service_id: "service_0f19o8c",
-      template_id: "template_m1ot4np",
-      user_id: "BBHK4CoORgSaMhZIR",
-      template_params: {
-        'full-name': document.querySelector('#fullName').value,
-        'email': document.querySelector('#email').value,
-        'message': document.querySelector('#message').value,
-          'g-recaptcha-response': token
+    emailjs.sendForm("service_0f19o8c", "template_m1ot4np", form).then(
+      function (response) {
+        console.log("SUCCESS!", response.status, response.text);
+        btn.innerHTML = `Message Sent !`;
+        btn.disabled = false;
+        btn.blur();
+        setTimeout(() => {
+          btn.innerHTML = `Send Message <i class="bi bi-send-fill"></i>`;
+          form.reset();
+        }, 2000);
+      },
+      function (error) {
+        console.log("FAILED...", error);
+        alert("Something went wrong. Please try again later.");
+        window.location.reload();
       }
-    };
-    
-    $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
-      type: 'POST',
-      data: JSON.stringify(data),
-      contentType: 'application/json'
-    }).done(function() {
-      console.log('Your mail is sent!');
-    }).fail(function(error) {
-      console.log('Oops... ' + JSON.stringify(error));
-      alert(error)
-    });
+    );
   });
+}
+
+// ! SIGN UP FUNCTIONS
+let atSignUp = window.location.href.includes("sign-up");
+function togglePass(ele) {
+  const passInput = document.querySelector("#password");
+  const type =
+  passInput.getAttribute("type") === "password" ? "text" : "password";
+  passInput.setAttribute("type", type);
+  ele.classList.toggle("bi-eye-slash-fill");
+}
+
+
+if (atSignUp) { 
+  const signUpForm = document.querySelector("#sign-up-form");
+  signUpForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const businessName = signUpForm.querySelector("#business-name").value;
+    const location = signUpForm.querySelector("#location").value;
+    const email = signUpForm.querySelector("#email").value;
+    const password = signUpForm.querySelector("#password").value;
+  })
+
 }

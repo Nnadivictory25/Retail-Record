@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Record - Sign Up</title>
+
+
+    <!-- custom stylesheet + script -->
+    <link rel="stylesheet" href="/dist/style.css">
+    <script defer src="/dist/script.js"></script>
+
+    <!-- favicon img -->
+    <link rel="shortcut icon" href="/images/favicon-rr.png" type="image/x-icon">
+
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="overflow-x-hidden ">
+
+    <header class=" mt-[-1rem]">
+        <a href="/" class="logo">
+            <img class="w-32" src="/images/RetailReco-mainLogo.png" alt="Retail Record Logo">
+        </a>
+    </header>
+
+    <section class="contactUs px-5 lg:px-20 mt-1">
+        <h1 class="text-center">Sign Up</h1>
+
+        <form action="#" class="form mt-5" id="sign-up-form" method="POST">
+            <input type="text" name="businessName" id="businessName" class="input" placeholder="Business Or Store Name" required
+                minlength="4">
+
+            <input type="text" name="location" id="location" class="input" placeholder="Location, eg: Lagos" required
+                minlength="2">
+
+            <input type="email" name="email" id="email" class="input" placeholder="Email" required>
+
+            <div class="form__passCtn relative mt-[1.8rem]">
+                <input minlength="6" class="input relative" type="password" name="password" id="password" placeholder="Password (min. 6 characters)" required>
+                <i onclick="togglePass(this)" class="bi bi-eye-fill  absolute right-3 text-lg top-[20%] cursor-pointer"></i>
+            </div>
+            
+
+            <button disabled class="button mt-7 mb-4" type="submit">Sign Up</button>
+
+            <p class="text-center font-semibold text-xl">OR</p>
+
+            <div id="googleSignInBtn" class="w-full px-3 py-2 text-white bg-black rounded flex justify-center items-center gap-x-5 mt-3 transition-all hover:opacity-70 cursor-pointer">
+                <img class="w-6" src="/images/icons8-google.svg" alt="google icon">
+                <p class="font-semibold">Sign In with Google</p>
+                <img class="w-5" aria-hidden="true" src="/images/icons8-right-arrow-30.png">
+            </div>
+        </form>
+    </section>
+
+
+</body>
+</html>
