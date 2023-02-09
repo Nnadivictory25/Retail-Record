@@ -78,6 +78,7 @@ if (window.location.href.includes("contact")) {
       console.log('Your mail is sent!');
     }).fail(function(error) {
       console.log('Oops... ' + JSON.stringify(error));
+      alert(error)
     });
   });
 }
