@@ -1,12 +1,33 @@
 html {
     font-size: 100%;
     box-sizing: border-box;
+    
+    /* width */
+    ::-webkit-scrollbar {
+        width: 5px !important;
+      }
+      
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: var(--blue) !important;
+        border-radius: 2rem;
+      }
+      
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--blue) !important;
+      }
 }
 
 *, *::before, *::after {
     box-sizing: inherit;
     list-style: none;
-    // outline: 1px solid red; // (For css debugging :) )
+    // outline: 1px solid red; // (For css debugging :) )+
 }
 
 body {

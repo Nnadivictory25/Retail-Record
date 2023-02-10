@@ -3,17 +3,17 @@
 
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; 
 
 @layer base {
-    h1 {
-        @apply text-4xl font-bold tracking-wide;
+    h1 { 
+        @apply text-3xl lg:text-4xl font-bold tracking-wide;
     }  
     h2 {
-        @apply text-3xl font-bold tracking-wide;
+        @apply lg:text-3xl text-2xl font-bold tracking-wide;
     }
     h3 {
-        @apply text-2xl font-bold tracking-wide;
+        @apply lg:text-2xl text-xl font-bold tracking-wide;
     } 
 }
 

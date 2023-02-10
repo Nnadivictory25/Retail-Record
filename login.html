@@ -5,16 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retail Record - Sign Up</title>
+    <title>Retail Record - Log In</title>
 
 
-    <!--  stylesheet and script files -->
+    <!-- stylesheet and script files  -->
     <link rel="stylesheet" href="/dist/style.css">
     <script defer src="/dist/script.js"></script>
-    <script defer src="/dist/signUp.js"></script>
-
-    <!-- supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- favicon img -->
     <link rel="shortcut icon" href="/images/favicon-rr.png" type="image/x-icon">
@@ -36,22 +32,12 @@
         </a>
     </header>
 
-    <section class="signUp px-5 lg:px-20 mt-10 lg:flex items-center justify-between">
-        <div class="signUp__formCtn lg:w-[47%]">
-            <h1 class="text-center lg:text-left pb-2">Get Started</h1>
-            <p class="text-center lg:text-left">Fill the form below to create an account.</p>
+    <section class="login px-5 lg:px-20 mt-10 lg:flex items-center justify-between mb-5">
+        <div class="login__formCtn lg:w-[47%]">
+            <h1 class="text-center lg:text-left pb-2">Log in to your Account</h1>
+            <p class="text-center lg:text-left">Welcome back! Select method to log in:</p>
     
-            <form action="#" class="form mt-5" id="sign-up-form" method="POST">
-
-                <div class="form__inputCtn relative">
-                    <input type="text" name="businessName" id="businessName" class="input" placeholder="Business Or Store Name" required minlength="4">
-                    <i class="bi bi-person-fill absolute right-3 text-lg top-[20%]"></i>
-                </div>
-    
-                <div class="form__inputCtn relative mt-[1.8rem]">
-                    <input type="text" name="location" id="location" class="input" placeholder="Location, eg: Lagos" required minlength="2">
-                    <i class="bi bi-geo-alt-fill absolute right-3 text-lg top-[20%]"></i>
-                </div>
+            <form action="#" class="form mt-5" id="login-form" method="POST">
     
                 <div class="form__inputCtn relative mt-[1.8rem]">
                     <input type="email" name="email" id="email" class="input" placeholder="Email" required>
@@ -65,19 +51,28 @@
                 </div>
                 
     
-                <button id="signUpBtn" disabled class="button mt-7 mb-4" type="submit">Sign Up</button>
+                <button id="loginBtn" disabled class="button mt-7 mb-5" type="submit">Log In</button>
+
+                <p id="line" class="text-center font-semibold my-5"><span>OR</span></p>
     
-                <div class="query flex items-center gap-x-2 justify-center">
-                    <p>Already have an account?</p>
-                    <a class="text-[hsl(216,93%,44%)] underline" href="/login">Login</a>
+                <div id="googleSignInBtn" class="w-full p-3  mb-5 text-black border border-gray-500 bg-white rounded flex justify-center items-center gap-x-3 mt-3 transition-all hover:opacity-70 cursor-pointer">
+                    <img class="w-6" src="/images/icons8-google.svg" alt="google icon">
+                    <p class="font-semibold">Sign In with Google</p>
+                    <i class="bi bi-arrow-right"></i>
                 </div>
-    
+
+                <div class="query flex items-center gap-x-2 justify-center mb-5">
+                    <p>New to Retail Record?</p>
+                    <a class="text-[hsl(216,93%,44%)] underline" href="/sign-up">Sign Up</a>
+                </div>
+
             </form>
         </div>
         <div aria-hidden="true" class="illustrationCtn hide-for-mobile w-[50%]">
-            <img src="/images/undraw_mobile_login_re_9ntv.svg" alt="">
+            <img class="xl:w-[80%] lg:w-[85%]" src="/images/undraw_access_account_re_8spm.svg" alt="">
         </div>
     </section>
+
 
 </body>
 </html>

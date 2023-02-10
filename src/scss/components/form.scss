@@ -37,4 +37,26 @@
     i {
         opacity: .5;
     }
+
+    #line {
+        position: relative;
+        &::before, &::after {
+            content: '';
+            position: absolute;
+            display: block;
+            height: .6px;
+            background-color: rgb(201, 197, 197);
+            width: 45%;
+        }
+
+        &::before {
+            top: 50%;
+            left: 0;
+        }
+
+        &::after {
+            top: 50%;
+            right: 0;
+        }
+    }
 }
