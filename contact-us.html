@@ -32,35 +32,47 @@
 
 <body class="overflow-x-hidden ">
 
-    <header class="relative pb-20">
-        <a href="/" class="logo absolute top-[-1.3rem] lg:left-14">
-            <img class="w-32" src="/images/RetailReco-mainLogo.png" alt="Retail Record Logo">
+    <header class="flex items-center justify-between lg:px-10 pt-5 px-5">
+        <a href="/" class="logo">
+            <img class="w-28" src="/images/mainLogo.png" alt="Retail Record Logo">
         </a>
 
         <nav>
             <a href="/sign-up"
-                class="nav-link absolute right-10 top-6 font-semibold text-white bg-black rounded p-2 px-3">Get
+                class="nav-link font-semibold text-white bg-[hsl(216,93%,44%)] rounded p-3">Get
                 Started</a>
         </nav>
     </header>
 
-    <section class="contactUs px-5 lg:px-20 mt-12">
-        <h1 class="text-center">Send us a message</h1>
+    <section class="contactUs px-5 lg:px-20 mt-12 lg:flex items-center justify-between">
+        <div class="contactUs_formCtn">
+            <h1 class="text-center lg:text-left mb-2">Send us a message !</h1>
+            <p>Fill the form below to contact us and we will be in touch shortly.</p>
 
-        <form action="#" class="form mt-10" id="form" method="POST" autocomplete="off">
-            <input type="text" name="full-name" id="fullName" class="input" placeholder="Full Name" required
-                minlength="4">
-
-            <input type="email" name="email" id="email" class="input" placeholder="Email" required>
-
-            <textarea name="message" id="message" cols="30" rows="5" class="input mb-2" required placeholder="Message"
-                minlength="5"></textarea>
-
-            <textarea name="g-recaptcha-response" id="g-response" cols="30" rows="30" style="display: none !important;"></textarea>
-            <div class="g-recaptcha" id="recaptcha" data-callback="checkRecaptcha" data-action="sendForm"></div>
-            <br />
-            <button disabled class="button mt-3 mb-4" type="submit">Send Message <i class="bi bi-send-fill"></i></button>
-        </form>
+            <form action="#" class="form mt-7" id="form" method="POST" autocomplete="off">
+                
+                <div class="form__inputCtn relative">
+                    <input type="text" name="full-name" id="fullName" class="input" placeholder="Full Name" required minlength="4">
+                    <i class="bi bi-person-fill absolute right-3 text-lg top-[20%]"></i>
+                </div>
+    
+                    <div class="form__inputCtn relative mt-[1.8rem]">
+                        <input type="email" name="email" id="email" class="input" placeholder="Email" required>
+                        <i class="bi bi-envelope-fill absolute right-3 text-lg top-[20%]"></i>
+                    </div>
+    
+                <textarea name="message" id="message" cols="30" rows="5" class="input mb-2" required placeholder="Message"
+                    minlength="5"></textarea>
+    
+                <textarea name="g-recaptcha-response" id="g-response" cols="30" rows="30" style="display: none !important;"></textarea>
+                <div class="g-recaptcha" id="recaptcha" data-callback="checkRecaptcha" data-action="sendForm"></div>
+                <br />
+                <button disabled class="button mt-3 mb-4" type="submit">Send Message <i class="bi bi-send-fill"></i></button>
+            </form>
+        </div>
+        <div class="illustrationCtn hide-for-mobile w-[50%]">
+            <img src="/images/undraw_contact_us_re_4qqt.svg" alt="contact us illustration">
+        </div>
     </section>
 
 

@@ -14,16 +14,15 @@
     }
     h3 {
         @apply text-2xl font-bold tracking-wide;
-    }
+    } 
 }
-
 
 @layer components {
     .input {
-        @apply w-full px-3 py-2 border  border-gray-500 rounded transition-all;
+        @apply w-full p-3 border  border-gray-500 rounded transition-all;
     }
 
     .button {
-        @apply w-full px-3 py-2 border bg-black text-white font-semibold border-gray-500 rounded flex items-center justify-center gap-x-2;
+        @apply w-full p-3 border bg-[hsl(216,93%,44%)] text-white font-semibold border-gray-500 rounded flex items-center justify-center gap-x-2;
     }
-}
+} 

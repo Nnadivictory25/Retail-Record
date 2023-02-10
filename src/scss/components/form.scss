@@ -4,14 +4,16 @@
 
 .form {
     width: min(95%, rem(450));
-    margin-inline: auto;
 
-    input,
-    textarea {
+    @include breakpoint-down(medium) {
+        margin: 0 auto;
+    }
+
+    input, textarea {
         @include transition;
 
         &:focus {
-            outline: 1px solid black;
+            outline: 1px solid var(--blue);
         }
 
         &:not(:first-child) {
@@ -30,5 +32,9 @@
             opacity: .2;
             pointer-events: none;
         }
+    }
+
+    i {
+        opacity: .5;
     }
 }

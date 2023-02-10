@@ -93,4 +93,10 @@ if (atSignUp) {
     const password = signUpForm.querySelector("#password").value;
   })
 
+  const initFormValidation = () => {
+    inputs.forEach((input) => {
+      input.addEventListener("keyup", validateInput);
+    });
+  }
+
 }
