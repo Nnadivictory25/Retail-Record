@@ -19,6 +19,10 @@
         &:not(:first-child) {
             margin-top: 1.8rem !important;
         }
+
+        &.err {
+            border: 1px solid red;
+        }
     }
 
     button {
