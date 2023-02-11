@@ -35,7 +35,7 @@ signUpForm.addEventListener("submit", async (e) => {
     email: email,
     password: password,
     options: {
-      emailRedirectTo: "https://localhost:3000/welcome.html", //! CHANGE URL
+      emailRedirectTo: "https://retailrecord.com/welcome", //! CHANGE URL
       data: {
         businessName: businessName,
         location: location,
