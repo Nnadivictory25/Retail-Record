@@ -11,7 +11,8 @@ const timerFunction = setInterval(() => {
     }
     time--
 
-    return time;
+    document.querySelector('.timer').textContent = time
+    
 }, 1000);
 
 const getUser = async () => {
@@ -26,7 +27,7 @@ const getUser = async () => {
         <h1 class="text-center">Email Verification Successful !</h1>
 
         <p class="text-center text-lg">
-            You will redirected to your dashboard in <span class="timer font-medium text-[hsl(216,93%,44%)]">${timerFunction()}</span>
+            You will redirected to your dashboard in <span class="timer font-medium text-[hsl(216,93%,44%)]">5</span>
         </p>
         `
     } else {

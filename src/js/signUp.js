@@ -71,8 +71,9 @@ signUpForm.addEventListener("submit", async (e) => {
 
     setTimeout(() => {
       signUpForm.querySelector("#email").classList.toggle("err");
-      signUpForm.querySelector("#errMsg").classList.toggle("hidden");
-    }, 3000);
+        signUpForm.querySelector("#errMsg").classList.toggle("hidden");
+        signUpBtn.innerHTML = 'Sign Up'
+    }, 5000);
   }
 
   error && console.log(error);
