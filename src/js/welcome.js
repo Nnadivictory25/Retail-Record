@@ -5,17 +5,14 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let time = 5
 
 
-const timerFunction = (el) => { 
+const timerFunction = setInterval(() => {
     if (time === 0) {
         window.location.href = '/dashboard'
     }
+    time--
 
-    setInterval(() => {
-        time--
-        return time;
-    }, 1000);
-
-}
+    return time;
+}, 1000);
 
 const getUser = async () => {
     const welcomeEl = document.querySelector('#welcome')
