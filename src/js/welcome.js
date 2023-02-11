@@ -12,9 +12,9 @@ const timerFunction = (el) => {
 
     setInterval(() => {
         time--
+        return time;
     }, 1000);
 
-    return time;
 }
 
 const getUser = async () => {
