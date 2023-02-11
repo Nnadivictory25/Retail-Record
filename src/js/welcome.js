@@ -4,7 +4,9 @@ const SUPABASE_KEY =
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let time = 5
 
-
+if (time === 0) {
+    clearInterval(timerFunction)
+}
 const timerFunction = setInterval(() => {
     if (time === 0) {
         window.location.href = '/dashboard'
