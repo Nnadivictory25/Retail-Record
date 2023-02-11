@@ -32,6 +32,11 @@ const getUser = async () => {
             You will redirected to your dashboard in <span class="timer font-medium text-[hsl(216,93%,44%)]">${timerFunction()}</span>
         </p>
         `
+    } else {
+        welcomeEl.innerHTML += `
+        <h1 class="text-center mt-20">NOT AUTHORIZED !</h1>
+        <a class="text-[hsl(216,93%,44%)] underline text-center mx-auto text-lg font-medium" href="/">Go back Home</a>
+        `
     }
 }
 getUser()
