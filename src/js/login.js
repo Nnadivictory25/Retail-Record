@@ -9,10 +9,8 @@ let userSession;
 let getUserSession = async () => {
     const { data: { user } } = await supabase.auth.getUser();
 
-    console.log(user)
-
     if (user) {
-        userSession = user;
+        window.location.href = "/dashboard";
     }
 }
 
@@ -27,20 +25,17 @@ const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-        redirectTo: 'http://localhost:3000/welcome.html' //! change url
+        redirectTo: 'http://localhost:3000/dashboard.html' //! change url
         }
     })
   
 
     if (data.session !== null) {
         console.log(data, data.session)
-        userSession = data.session;
-        console.log(userSession)
     }
     
-    if (error) {
-      console.error(error)
-    }
+    error && console.error(error)
+    
 }
 googleAuthBtn.addEventListener('click', signInWithGoogle)
 
@@ -61,8 +56,7 @@ loginForm.addEventListener('submit', async (e) => {
     })
     
     if (user !== null) {
-        userSession = user ;
-        console.log(userSession)
+        window.location.href = "/dashboard";
       } 
     
     if (error && error.message.includes('credentials')) {
