@@ -43,6 +43,7 @@
     
             <form action="#" class="form mt-5" id="login-form" method="POST">
     
+                
                 <div class="form__inputCtn relative mt-[1.8rem]">
                     <input type="email" name="email" id="email" class="input" placeholder="Email" required>
                     <i class="bi bi-envelope-fill absolute right-3 text-lg top-[20%]"></i>
@@ -54,8 +55,9 @@
                     <i onclick="togglePass(this)" class="bi bi-eye-fill  absolute right-3 text-lg top-[25%] cursor-pointer"></i>
                 </div>
                 
+                <p class="errMsg text-red-600 text-sm pt-2 hidden">Invalid Credentials, please try again</p>
     
-                <button id="loginBtn" disabled class="button mt-7 mb-5" type="submit">Log In</button>
+                <button id="loginBtn" disabled class="button mt-7 mb-5 h-[50px]" type="submit">Log In</button>
 
                 <p id="line" class="text-center font-semibold my-5"><span>OR</span></p>
     

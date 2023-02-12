@@ -24,7 +24,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 signUpForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   signUpBtn.innerHTML = `
-    <img class="w-14" src="/images/pulse-loading.gif" alt="">
+    <img class="w-14" src="/images/pulse-loading.gif">
     `;
   const businessName = signUpForm.querySelector("#businessName").value;
   const location = signUpForm.querySelector("#location").value;
