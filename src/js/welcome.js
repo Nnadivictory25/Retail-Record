@@ -20,7 +20,7 @@ const timerFunction = setInterval(() => {
 const getUser = async () => {
     const welcomeEl = document.querySelector('#welcome')
     const { data: { user } } = await supabase.auth.getUser()
-    console.log(user)
+    user && console.log(user)
 
     if (user) {
         welcomeEl.innerHTML += `
@@ -29,13 +29,13 @@ const getUser = async () => {
         <h1 class="text-center">Email Verification Successful !</h1>
 
         <p class="text-center text-lg">
-            You will redirected to your dashboard in <span class="timer font-medium text-[hsl(216,93%,44%)]">5</span>
+            You will redirected to your dashboard in <span class="timer font-medium text-blue">5</span>
         </p>
         `
     } else {
         welcomeEl.innerHTML += `
         <h1 class="text-center mt-20">NOT AUTHORIZED !</h1>
-        <a class="text-[hsl(216,93%,44%)] underline text-center mx-auto text-lg font-medium" href="/">Go back Home</a>
+        <a class="text-blue underline text-center mx-auto text-lg font-medium" href="/">Go back Home</a>
         `
     }
 }

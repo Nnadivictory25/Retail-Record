@@ -10,6 +10,7 @@
 
     <!-- stylesheet and script files  -->
     <link rel="stylesheet" href="/dist/style.css">
+    <script defer src="/dist/dashboard.js"></script>
 
 
     <!-- supabase -->
@@ -27,21 +28,90 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="px-5 lg:px-10 xl:px-20">
+<body class="px-5 lg:px-10 xl:px-20 overflow-x-hidden">
 
-    <nav class="pt-3 flex items-center justify-between">
-        <i class="bi bi-filter-left bg-slate-100 text-xl rounded-full px-3 py-2 transition-all hover:bg-slate-200 cursor-pointer"></i>
+    <div class="vh overlay transition ease-in-out delay-150 fixed bg-zinc-900  z-10"></div>
+
+    <!-- ! MODAL -->
+    <div id="addCatModal" class="vh modal transition px-5 bg-white rounded ease-in-out delay-150 fixed z-40 mx-auto inset-x-0 pt-2 pb-4 ">
+        <div class="header">
+            <p class="text-lg font-semibold">Add a new category</p>
+        </div>
+
+        <form action="#" class="addCatForm mt-5 flex flex-col gap-y-3">
+            <input required minlength="3" type="text" class="input p-2" placeholder="Category Name, e.g: Biscuits *">
+            <input type="tel" class="input p-2" placeholder="Total Sales Amount ₦ (if applicable)">
+
+            <div class="btnCtn flex items-center justify-between mt-5">
+                <button class="w-[45%] button border border-slate-500 bg-white text-black transition-all hover:opacity-70" type="button">Cancel</button>
+                <button class="button w-[45%] transition-all hover:opacity-70" type="submit">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ! NAVBAR -->
+    <nav class="pt-3 flex items-center justify-between relative">
+        <i id="navToggler" class="bi bi-filter-left bg-slate-100 text-xl rounded-full px-3 py-2 transition-all hover:bg-slate-200 lg:cursor-pointer"  title="Menu"></i>
 
         <div class="profile">
             <div class="imgCtn w-10 h-10 rounded-full">
                 <p class="font-semibold transition-all text-white bg-[hsl(216,93%,44%)] rounded-full text-center  py-2 hover:bg-[hsl(216,93%,34%)] cursor-pointer">K</p>
             </div>
         </div>
+
+        <ul class="nav absolute bg-white rounded flex flex-col top-16" style="left: -100%;">
+            <li onclick="logOut()" class="cursor-pointer hover:bg-slate-100 px-4 py-2"><i class="bi bi-power mr-2 text-lg"></i>Log Out</li>
+            <li class="cursor-pointer hover:bg-slate-100 px-4 py-2"><a href="/profile" class="hover:opacity-100"><i class="bi bi-person mr-2 text-lg"></i>Profile</a></li>
+        </ul>
     </nav>
 
-    <section class="welcomeMsg font-medium mt-10">
-        <p class="text-slate-600 ">Welcome back</p>
-        <p id="bussinessName" class="text-xl">Kamas Enterprises</p>
+    <section class="dashboard font-medium lg:mt-12 mt-8 flex flex-wrap items-center justify-between">
+        <div class="dashboard__welcomeMsg">
+            <p class="text-slate-600 ">Welcome back</p>
+            <p id="bussinessName" class="text-xl">Kamas Enterprises</p>
+        </div>
+
+        <div id="loadingDashboard" class="bg-white border w-[250px] flex flex-col gap-y-4 border-slate-300 rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0">
+            <div class="text-object2 loading-state"></div>
+            <div class="text-object loading-state"></div>
+            <div class="text-object2 loading-state"></div>
+        </div>
+
+        <!-- <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
+            <p class="text-xl font-medium">Total Sales</p>
+            <p class="text-slate-300">As of 13th Febuary 2023</p>
+            <p class="totalSales text-lg"><span class="text-sm">₦</span>500,000</p>
+        </div> -->
+    </section>
+
+    <hr class="mt-3">
+
+    <section class="categories mt-5">
+        <div class="header flex items-center justify-between">
+            <p class="text-xl font-medium">Goods Categories</p>
+            <div class="add underline cursor-pointer">
+                <p class="text-blue">Add Category</p>
+            </div>
+        </div>
+
+        <div class="categories__ctn mt-7 lg:mt-9 gap-6">
+
+            <div class="category loadindCategory bg-white border border-slate-300  text-white px-5 rounded py-4 relative">
+                <div class="text-object loading-state"></div>
+                <div class="text-object2 loading-state mt-5"></div>
+                <div class="img-object absolute right-5 loading-state rounded-full top-[30%]"></div>
+            </div>
+
+            <!-- <div class="category bg-blue text-white px-5 rounded py-4 relative shadow-md">
+                <p class="category__name text-lg font-medium underline">Biscuits</p>
+                <div class="totalCtn flex items-center gap-x-1 pt-3">
+                    <p>Total :</p>
+                    <p class="thisSales"><span class="text-sm">₦</span>3,500</p>
+                </div>
+                <i title="Add Record" class="bi bi-plus-lg absolute right-5 text-black bg-white rounded-full px-2 py-1 text-xl top-[30%] transition-all hover:bg-slate-200 cursor-pointer"></i>
+            </div> -->
+            
+        </div>
     </section>
 </body>
 </html>

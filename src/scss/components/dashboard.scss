@@ -1,0 +1,92 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+@use '../util/mixins.scss' as *;
+
+.categories {
+
+    &__ctn {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        grid-auto-rows: 100px;
+
+        @include breakpoint-down(medium) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include breakpoint-down(small) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .category {
+            width: min(100%, rem(350));
+
+
+            @include breakpoint-down(medium) {
+                justify-self: center;
+            }
+        }
+    }
+}
+
+// LOADING STATE
+
+.img-object {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+
+}
+
+.text-object {
+    width: 60%;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.text-object2 {
+    width: 35%;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.loading-state {
+    // animation: loading .7s linear infinite alternate;
+    opacity: .8;
+}
+
+@keyframes loading {
+    0% {
+        background-color: hsl(200, 20%, 70%);
+    }
+
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
+}
+
+
+.overlay {
+    height: 100vh !important;
+    width: 100vw !important;
+    inset: 0;
+    opacity: .3;
+}
+
+.modal {
+    width: 90%;
+    max-width: rem(450);
+    height: auto;
+    overflow: hidden;
+    top: 40%;
+    left: 50%;
+    transform: translate(0%, -50%);
+
+    input {
+        @include transition;
+
+        &:focus {
+            outline: 1px solid var(--blue);
+        }
+    }
+}
