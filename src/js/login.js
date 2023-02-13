@@ -73,3 +73,5 @@ loginForm.addEventListener('submit', async (e) => {
     error && console.error(error);
     
 })
+
+getUserSession();

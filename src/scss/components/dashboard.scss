@@ -51,7 +51,7 @@
 }
 
 .loading-state {
-    // animation: loading .7s linear infinite alternate;
+    // animation: loading .7s linear infinite alternate;  
     opacity: .8;
 }
 
@@ -89,4 +89,8 @@
             outline: 1px solid var(--blue);
         }
     }
+}
+
+.vh {
+    visibility: hidden;
 }
