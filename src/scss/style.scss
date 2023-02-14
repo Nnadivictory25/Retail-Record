@@ -5,7 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base { 
+@layer base {  
     h1 { 
         @apply text-3xl lg:text-4xl font-bold tracking-wide;
     }  
