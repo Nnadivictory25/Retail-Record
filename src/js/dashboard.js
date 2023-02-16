@@ -19,8 +19,9 @@ let navActive = false;
     console.log(user);
     loggedUser = user;
     userId = loggedUser.id;
+    localStorage.setItem("userId", userId);
 
-    loadName.remove();
+    loadName?.remove();
     welcomeMsgEl.innerHTML += `
         <p id="bussinessName" class="text-xl">${loggedUser.user_metadata.businessName}</p>
         `;
@@ -60,11 +61,9 @@ const logOut = async () => {
   }
   loggedUser = null;
   userId = null;
-  
+
   window.location.href = "/login.html"; //! change url !!!
 };
-
-
 
 // ! Dashboard rendering
 const dashboardEl = document.querySelector(".dashboard");
@@ -95,7 +94,7 @@ const renderDashboard = async () => {
   categories = data;
 
   if (categories.length === 0) {
-    loadingDashboard.remove();
+    loadingDashboard?.remove();
     dashboardEl.innerHTML += `
         <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
             <p class="text-xl font-medium">Total Sales</p>
@@ -104,7 +103,10 @@ const renderDashboard = async () => {
        </div>
         `;
   } else {
-    const total = categories.reduce((a, b) => a.total + b.total, 0);
+    loadingDashboard?.remove();
+    const length = Array.from(dashboardEl.children).length;
+    console.log(length, dashboardEl.children[length - 1])
+    const total = categories.reduce((a, b) => a + b.total, 0);
     dashboardEl.innerHTML += `
         <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
             <p class="text-xl font-medium">Total Sales</p>
@@ -117,18 +119,17 @@ const renderDashboard = async () => {
   renderCategories();
 };
 
-
 // ! CATEGORIES RENDERING
 const renderCategories = async () => {
   if (categories.length === 0) {
     categoriesEl.innerHTML =
-      '<p class="text-center text-xl font-semibold text-blue mt-5">No categories found !</p>';
+      '<p class="text-center text-xl self-center font-semibold text-blue mt-5">No categories found !</p>';
   } else {
-      categoriesEl.innerHTML = ''
+    categoriesEl.innerHTML = "";
 
-      categories.map(category => {
-          const { id, name, total } = category;
-          categoriesEl.innerHTML += `
+    categories.map((category) => {
+      const { id, name, total } = category;
+      categoriesEl.innerHTML += `
           <div class="category bg-blue text-white px-5 rounded py-4 relative shadow-md">
             <p class="category__name text-lg font-medium underline">${name}</p>
             <div class="totalCtn flex items-center gap-x-1 pt-3">
@@ -138,12 +139,67 @@ const renderCategories = async () => {
             <i title="Add Record" class="bi bi-plus-lg absolute right-5 text-black bg-white rounded-full px-2 py-1 text-xl top-[30%] transition-all hover:bg-slate-200 cursor-pointer"></i>
             <i onclick="deleteCategory(${id})" title="Delete Category" class="bi bi-x-circle-fill absolute top-[-.5rem] text-white rounded-full px-1 bg-opacity-40 bg-black right-[-.4rem] transition-all hover:bg-opacity-60 cursor-pointer"></i>
         </div>  
-          `
-      })
+          `;
+    });
   }
 };
 
-
-
-// ! ADD CATEGORY MODAL OPENING
+// ! ADD CATEGORY MODAL OPENING AND CLOSING
 const addCategoryModalEl = document.querySelector(".modal");
+const overlayEl = document.querySelector(".overlay");
+const addCategoryForm = document.querySelector("#addCatModal");
+const addCatBtn = document.querySelector('#addCatBtn')
+
+const openModal = () => {
+  addCategoryModalEl.classList.add("fade-in");
+  overlayEl.classList.add("fade-in");
+  addCategoryModalEl.style.display = "block"; // make the modal visible
+  overlayEl.style.display = "block"; // make the overlayEl visible
+
+  overlayEl.addEventListener("click", closeModal);
+};
+
+const closeModal = () => {
+  addCatBtn.innerHTML = `
+  Add 
+  `;
+  addCategoryModalEl.classList.add("fade-out");
+  overlayEl.classList.add("fade-out");
+  setTimeout(() => {
+    addCategoryModalEl.style.display = "none"; // hide the addCategoryModalEl after the animation completes
+    overlayEl.style.display = "none"; // hide the overlayEl after the animation completes
+    addCategoryModalEl.classList.remove("fade-out");
+    overlayEl.classList.remove("fade-out");
+  }, 300); // set the timeout to match the animation duration
+};
+
+// ! ADDING CATEGORY
+addCategoryForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  addCatBtn.innerHTML = `
+  <img class="w-14" src="/images/pulse-loading.gif">
+  `;
+
+  const categoryName = e.target.name.value;
+  const total = e.target.total.value || 0;
+
+  console.log(categoryName, total);
+
+  const { data, error } = await supabase
+    .from("categories")
+    .insert({
+      name: categoryName,
+      user_id: userId || localStorage.getItem("userId"),
+      total: total,
+    })
+    .select("*");
+
+  
+  if (data) {
+    closeModal();
+    renderDashboard();
+  } else {
+    console.error(error);
+    alert(error.message);
+  }
+});

@@ -19,7 +19,7 @@
 
 @layer components {
     .input {
-        @apply w-full p-3 border  border-gray-500 rounded transition-all;
+        @apply w-full p-3 border  border-gray-500 rounded;
     }
 
     .button {

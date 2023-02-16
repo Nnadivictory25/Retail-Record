@@ -56,7 +56,7 @@
 }
 
 .loading-state {
-    animation: loading .7s linear infinite alternate;  
+    animation: loading .7s linear infinite alternate;
     opacity: .8;
 }
 
@@ -83,19 +83,75 @@
     max-width: rem(450);
     height: auto;
     overflow: hidden;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(0%, -50%);
 
     input {
-        @include transition;
+        @include transition(outline-color);
 
         &:focus {
             outline: 1px solid var(--blue);
+        }
+    }
+
+    button {
+        @include transition(opacity);
+
+        &:hover {
+            opacity: .7;
         }
     }
 }
 
 .vh {
     visibility: hidden;
+}
+
+.overlay,
+.modal {
+    display: none;
+}
+
+.overlay {
+    opacity: .3 !important;
+}
+
+/* Keyframes for fading in and out */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    100% {
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
+/* CSS for the element to be animated */
+.hasFade {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+}
+
+.fade-in {
+    animation-name: fadeIn;
+}
+
+.fade-out {
+    animation-name: fadeOut;
 }

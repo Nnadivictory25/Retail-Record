@@ -10,7 +10,7 @@
     }
 
     input, textarea {
-        @include transition;
+        @include transition(outline-color);
 
         &:focus {
             outline: 1px solid var(--blue);
@@ -63,4 +63,8 @@
             right: 0;
         }
     }
+}
+
+.input {
+    @include transition(outline-color);
 }
