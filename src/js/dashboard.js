@@ -6,9 +6,12 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const navToggler = document.querySelector("#navToggler");
 const nav = document.querySelector(".nav");
 const body = document.querySelector("body");
+const profilePIc = document.querySelector('#profilePic')
 let loggedUser = null;
+const bgColor = `hsl(216, 93%, 44%)` // for toastify
 let userId;
 let navActive = false;
+
 
 (async () => {
   const {
@@ -18,6 +21,7 @@ let navActive = false;
   if (user) {
     console.log(user);
     loggedUser = user;
+    profilePIc.textContent = user.user_metadata.businessName[0]
     userId = loggedUser.id;
     localStorage.setItem("userId", userId);
 
@@ -95,6 +99,7 @@ const renderDashboard = async () => {
 
   if (categories.length === 0) {
     loadingDashboard?.remove();
+    document.querySelector('.dashboard__salesSummary')?.remove()
     dashboardEl.innerHTML += `
         <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
             <p class="text-xl font-medium">Total Sales</p>
@@ -104,8 +109,7 @@ const renderDashboard = async () => {
         `;
   } else {
     loadingDashboard?.remove();
-    const length = Array.from(dashboardEl.children).length;
-    console.log(length, dashboardEl.children[length - 1])
+    document.querySelector('.dashboard__salesSummary')?.remove()
     const total = categories.reduce((a, b) => a + b.total, 0);
     dashboardEl.innerHTML += `
         <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
@@ -131,7 +135,7 @@ const renderCategories = async () => {
       const { id, name, total } = category;
       categoriesEl.innerHTML += `
           <div class="category bg-blue text-white px-5 rounded py-4 relative shadow-md">
-            <p class="category__name text-lg font-medium underline">${name}</p>
+            <p class="category__name text-lg font-medium underline capitalize">${name}</p>
             <div class="totalCtn flex items-center gap-x-1 pt-3">
                 <p>Total :</p>
                 <p class="thisSales"><span class="text-sm">₦</span>${total}</p>
@@ -147,7 +151,7 @@ const renderCategories = async () => {
 // ! ADD CATEGORY MODAL OPENING AND CLOSING
 const addCategoryModalEl = document.querySelector(".modal");
 const overlayEl = document.querySelector(".overlay");
-const addCategoryForm = document.querySelector("#addCatModal");
+const addCategoryForm = document.querySelector(".addCatForm");
 const addCatBtn = document.querySelector('#addCatBtn')
 
 const openModal = () => {
@@ -160,9 +164,10 @@ const openModal = () => {
 };
 
 const closeModal = () => {
-  addCatBtn.innerHTML = `
-  Add 
-  `;
+  setTimeout(() => {
+    addCatBtn.innerHTML = `Add`;
+  }, 300);
+  addCategoryForm.reset()
   addCategoryModalEl.classList.add("fade-out");
   overlayEl.classList.add("fade-out");
   setTimeout(() => {
@@ -197,9 +202,51 @@ addCategoryForm.addEventListener("submit", async (e) => {
   
   if (data) {
     closeModal();
+
+    Toastify({
+      text: `Category Added !`,
+      duration: 2000,
+      newWindow: false,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: false, // Prevents dismissing of toast on hover
+      style: {
+          background: bgColor,
+          color: '#fff',
+      },
+    }).showToast();
+    
     renderDashboard();
   } else {
     console.error(error);
     alert(error.message);
   }
 });
+
+
+// ! DELETING CATEGORY
+const deleteCategory = async (id) => {
+  const { error } = await supabase
+  .from("categories")
+  .delete()
+  .eq("id", id)
+  
+  error && console.error(error);
+
+  !error && Toastify({
+    text: `Category Deleted !`,
+    duration: 2000,
+    newWindow: false,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    stopOnFocus: false, // Prevents dismissing of toast on hover
+    style: {
+        background: bgColor,
+        color: '#fff',
+    },
+  }).showToast();
+
+  renderDashboard()
+}
