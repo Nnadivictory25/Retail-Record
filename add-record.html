@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Record - Log In</title>
+
+
+    <!-- stylesheet and script files  -->
+    <link rel="stylesheet" href="/dist/style.css">
+    <script defer src="/dist/addRecord.js"></script>
+
+
+    <!-- supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- favicon img -->
+    <link rel="shortcut icon" href="/images/favicon-rr.png" type="image/x-icon">
+
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- toastify -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+
+<body class="px-5 lg:px-10 xl:px-20 overflow-x-hidden">
+
+    <nav class="pt-3 flex items-center justify-between relative">
+        <i id="navToggler" class="bi bi-filter-left bg-slate-100 text-xl rounded-full px-3 py-2 transition-all hover:bg-slate-200 lg:cursor-pointer"  title="Menu"></i>
+
+        <div class="profile">
+            <div class="imgCtn w-10 h-10 rounded-full">
+                <p id="profilePic" class="font-semibold transition-all text-white bg-[hsl(216,93%,44%)] rounded-full text-center  py-2 hover:bg-[hsl(216,93%,34%)] cursor-pointer"><span class="invisible">K</span></p>
+            </div>
+        </div>
+
+        <ul class="nav absolute bg-white rounded flex flex-col top-16 z-10" style="left: -100%;">
+            <li onclick="logOut()" class="cursor-pointer hover:bg-slate-100 px-4 py-2"><i class="bi bi-power mr-2 text-lg"></i>Log Out</li>
+            <li class="cursor-pointer hover:bg-slate-100 px-4 py-2"><a href="/profile" class="hover:opacity-100"><i class="bi bi-person mr-2 text-lg"></i>Profile</a></li>
+        </ul>
+    </nav>
+
+    <p id="selectedRecordEl" class="text-xl font-semibold mt-8">Manage record for <span class="loading-state text-object inline-block w-24"></span></p>
+
+    <div id="recordInfo" class="flex items-center justify-between mt-5">
+        <p id="catTotal" class="font-semibold text-xl text-slate-700">Total : 8000</p>
+        <p onclick="clearAllRecords()" class="underline text-blue font-medium cursor-pointer transition-all hover:opacity-75  ">Clear All</p>
+    </div>
+
+    <button id="createRecordBtn" class="bg-blue text-white rounded px-2 py-1 font-medium mt-5 transition-all hover:opacity-75"><i class="bi bi-clipboard-plus mr-1"></i> Create New Record</button>
+
+    <section class="records mt-7 bg-slate-50 py-2 rounded">
+        <div class="header font-bold pb-2">
+            <p class="text-lg">S/N</p>
+            <p class="text-lg">Type</p>
+            <p class="text-lg">Amount</p>
+            <p class="text-lg">Action</p>
+        </div>
+        <hr>
+        <div class="data pt-2">
+            <p class="text-lg">1</p>
+            <p class="text-lg text-green-600 font-medium">Sale</p>
+            <p class="text-lg">800</p>
+            <div class="flex items-center gap-x-3 mx-auto">
+                <i title="Delete Record" class="bi bi-trash3 text-red-600 text-lg cursor-pointer transition-all hover:opacity-70 "></i>
+                <i title="Edit Record" class="bi bi-pencil-square text-lg cursor-pointer transition-all hover:opacity-70 "></i>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</html>

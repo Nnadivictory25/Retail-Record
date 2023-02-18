@@ -1,0 +1,21 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+@use '../util/mixins.scss' as *;
+
+
+.records {
+
+    & > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 2fr;
+        text-align: center;
+    }
+    .data {
+
+        > * {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            
+        }
+    }
+}

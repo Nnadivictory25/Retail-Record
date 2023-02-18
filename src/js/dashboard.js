@@ -6,33 +6,37 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const navToggler = document.querySelector("#navToggler");
 const nav = document.querySelector(".nav");
 const body = document.querySelector("body");
-const profilePIc = document.querySelector('#profilePic')
+const profilePic = document.querySelector('#profilePic')
+const userInitials = localStorage.getItem("userInitials");
 let loggedUser = null;
 const bgColor = `hsl(216, 93%, 44%)` // for toastify
 let userId;
 let navActive = false;
 
 
-(async () => {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+localStorage.removeItem("selectedCategory")
+profilePic.textContent = userInitials;
 
+
+(async () => { const { data: { user } } = await supabase.auth.getUser()
   if (user) {
     console.log(user);
     loggedUser = user;
-    profilePIc.textContent = user.user_metadata.businessName[0]
+    localStorage.setItem("userInitials", user.user_metadata.businessName[0])
     userId = loggedUser.id;
     localStorage.setItem("userId", userId);
+    localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+    
 
     loadName?.remove();
     welcomeMsgEl.innerHTML += `
         <p id="bussinessName" class="text-xl">${loggedUser.user_metadata.businessName}</p>
         `;
+        console.log(userId);
+        renderDashboard();
+  } else {
+    window.location.href = "/login.html"; // ! CHANGE URL
   }
-
-  console.log(userId);
-  renderDashboard();
 })();
 
 navToggler.addEventListener("click", () => {
@@ -65,6 +69,8 @@ const logOut = async () => {
   }
   loggedUser = null;
   userId = null;
+  localStorage.setItem("loggedUser", null);
+
 
   window.location.href = "/login.html"; //! change url !!!
 };
@@ -115,7 +121,7 @@ const renderDashboard = async () => {
         <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
             <p class="text-xl font-medium">Total Sales</p>
             <p class="text-slate-300">As of  ${date}</p>
-            <p class="totalSales text-lg"><span class="text-sm">₦</span>${total}</p>
+            <p class="totalSales text-lg"><span class="text-sm">₦</span>${total.toLocaleString()}</p>
        </div>
         `;
   }
@@ -138,9 +144,9 @@ const renderCategories = async () => {
             <p class="category__name text-lg font-medium underline capitalize">${name}</p>
             <div class="totalCtn flex items-center gap-x-1 pt-3">
                 <p>Total :</p>
-                <p class="thisSales"><span class="text-sm">₦</span>${total}</p>
+                <p class="thisSales"><span class="text-sm">₦</span>${total.toLocaleString()}</p>
             </div>
-            <i title="Add Record" class="bi bi-plus-lg absolute right-5 text-black bg-white rounded-full px-2 py-1 text-xl top-[30%] transition-all hover:bg-slate-200 cursor-pointer"></i>
+            <i title="Add Record" onclick="addRecordFor('${name}', ${total})" class="bi bi-plus-lg absolute right-5 text-black bg-white rounded-full px-2 py-1 text-xl top-[30%] transition-all hover:bg-slate-200 cursor-pointer"></i>
             <i onclick="deleteCategory(${id})" title="Delete Category" class="bi bi-x-circle-fill absolute top-[-.5rem] text-white rounded-full px-1 bg-opacity-40 bg-black right-[-.4rem] transition-all hover:bg-opacity-60 cursor-pointer"></i>
         </div>  
           `;
@@ -159,6 +165,8 @@ const openModal = () => {
   overlayEl.classList.add("fade-in");
   addCategoryModalEl.style.display = "block"; // make the modal visible
   overlayEl.style.display = "block"; // make the overlayEl visible
+  body.classList.toggle("no-scroll");
+
 
   overlayEl.addEventListener("click", closeModal);
 };
@@ -170,6 +178,8 @@ const closeModal = () => {
   addCategoryForm.reset()
   addCategoryModalEl.classList.add("fade-out");
   overlayEl.classList.add("fade-out");
+  body.classList.toggle("no-scroll");
+
   setTimeout(() => {
     addCategoryModalEl.style.display = "none"; // hide the addCategoryModalEl after the animation completes
     overlayEl.style.display = "none"; // hide the overlayEl after the animation completes
@@ -249,4 +259,17 @@ const deleteCategory = async (id) => {
   }).showToast();
 
   renderDashboard()
+}
+
+
+// ! ADDING RECORD (PART 1)
+const addRecordFor = (category, total) => {
+  const selectedCategoryInfo = {
+    category: category,
+    total: total,
+  }
+  localStorage.setItem('selectedCategory', JSON.stringify(selectedCategoryInfo));
+
+  window.location.href = "/add-record.html"; //! change url!!!
+
 }
