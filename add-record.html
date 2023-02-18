@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -33,6 +33,24 @@
 
 <body class="px-5 lg:px-10 xl:px-20 overflow-x-hidden">
 
+    <div class="hasFade overlay fixed bg-zinc-900  z-10"></div>
+
+    <!-- ! MODAL -->
+    <div id="addRecordModal" class="hasFade modal px-5 bg-white rounded fixed z-40 mx-auto inset-x-0 pt-2 pb-4 ">
+        <div class="header">
+            <p class="text-lg font-semibold">Add a new record</p>
+        </div>
+
+        <form action="#" class="addRecForm mt-5 flex flex-col gap-y-3">
+            <input id="amount" name="amount" required type="tel" class="input p-2" placeholder="Amount ₦">
+
+            <div class="btnCtn flex items-center justify-between mt-5">
+                <button onclick="closeModal()" class="w-[45%] h-[50px] button border border-slate-500 bg-white text-black hover:opacity-70" type="button">Cancel</button>
+                <button id="addRecordBtn" class="button w-[45%] h-[50px] hover:opacity-70" type="submit">Add</button>
+            </div>
+        </form>
+    </div>
+
     <nav class="pt-3 flex items-center justify-between relative">
         <i id="navToggler" class="bi bi-filter-left bg-slate-100 text-xl rounded-full px-3 py-2 transition-all hover:bg-slate-200 lg:cursor-pointer"  title="Menu"></i>
 
@@ -60,21 +78,13 @@
     <section class="records mt-7 bg-slate-50 py-2 rounded">
         <div class="header font-bold pb-2">
             <p class="text-lg">S/N</p>
-            <p class="text-lg">Type</p>
             <p class="text-lg">Amount</p>
             <p class="text-lg">Action</p>
         </div>
-        <hr>
-        <div class="data pt-2">
-            <p class="text-lg">1</p>
-            <p class="text-lg text-green-600 font-medium">Sale</p>
-            <p class="text-lg">800</p>
-            <div class="flex items-center gap-x-3 mx-auto">
-                <i title="Delete Record" class="bi bi-trash3 text-red-600 text-lg cursor-pointer transition-all hover:opacity-70 "></i>
-                <i title="Edit Record" class="bi bi-pencil-square text-lg cursor-pointer transition-all hover:opacity-70 "></i>
-            </div>
-        </div>
+        <hr class="h-2">
     </section>
+
+    <div class="errMsg"></div>
 
 </body>
 

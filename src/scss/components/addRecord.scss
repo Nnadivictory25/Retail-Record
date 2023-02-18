@@ -7,7 +7,7 @@
 
     & > div {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 2fr;
+        grid-template-columns: 1fr 1fr 2fr;
         text-align: center;
     }
     .data {
@@ -16,6 +16,10 @@
             padding-top: 5px;
             padding-bottom: 5px;
             
+        }
+
+        &:not(:last-child) {
+            border-bottom: 1px solid rgb(196, 193, 193);
         }
     }
 }

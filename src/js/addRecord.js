@@ -4,6 +4,7 @@ const SUPABASE_KEY =
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let userId;
+const bgColor = `hsl(216, 93%, 44%)`; // for toastify
 const userInitials = localStorage.getItem("userInitials");
 const profilePic = document.querySelector("#profilePic");
 const body = document.querySelector("body");
@@ -18,8 +19,10 @@ profilePic.textContent = userInitials;
   } = await supabase.auth.getUser();
   if (user) {
     console.log(user);
-    document.querySelector("#profilePic").textContent =  user.user_metadata.businessName[0];
+    document.querySelector("#profilePic").textContent =
+      user.user_metadata.businessName[0];
     userId = user.id;
+    renderRecordTable();
   } else {
     window.location.href = "/login.html"; // ! CHANGE URL
   }
@@ -47,9 +50,13 @@ navToggler.addEventListener("click", () => {
   }
 });
 
-const selectedCategory = JSON.parse(localStorage.getItem("selectedCategory"))
+const selectedCategory = JSON.parse(localStorage.getItem("selectedCategory"));
 const selectedCategoryEl = document.querySelector("#selectedRecordEl");
 const totalEl = document.querySelector("#catTotal");
+
+const recordsTable = document.querySelector(".records");
+const errMsgEl = document.querySelector(".errMsg");
+let records = [];
 
 if (selectedCategory) {
   selectedCategoryEl.innerHTML = `
@@ -57,5 +64,210 @@ if (selectedCategory) {
   `;
   totalEl.textContent = `Total : ₦${selectedCategory?.total.toLocaleString()}`;
 } else {
-  body.innerHTML = '<p class="font-bold text-3xl text-center text-red-600 mt-20"> 404 , PAGE NOT FOUND !!</p>';
+  body.innerHTML =
+    '<p class="font-bold text-3xl text-center text-red-600 mt-20"> 404 , PAGE NOT FOUND !!</p>';
 }
+
+const renderRecordTable = async (cleared = false) => {
+  const { data, error } = await supabase
+    .from("sub-categories")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("category", selectedCategory?.category);
+
+  if (error) {
+    console.log(error);
+    alert(error.message);
+  }
+
+  records = data;
+
+  console.log(records);
+
+  if (records.length === 0) {
+    if (!cleared) {
+      recordsTable.remove();
+    } else {
+      recordsTable.innerHTML ='';
+    }
+    errMsgEl.innerHTML = `
+    <p class="font-bold text-xl text-center text-blue mt-5"> No records for ${selectedCategory.category} yet</p>
+    `;
+  } else {
+    errMsgEl.innerHTML = '';
+    recordsTable.innerHTML = `
+      <div class="header font-bold pb-2">
+        <p class="text-lg">S/N</p>
+        <p class="text-lg">Amount</p>
+        <p class="text-lg">Action</p>
+      </div>
+     <hr class="h-2">
+    `;
+    records.map((record, i) => {
+      const { amount } = record;
+
+      recordsTable.innerHTML += /* html */ `
+      <div class="data pt-2">
+        <p class="text-lg">${i + 1}</p>
+        <p class="text-lg text-green-600 font-medium">+${amount}</p>
+        <div class="flex items-center gap-x-3 mx-auto">
+          <i title="Edit Record" class="bi bi-pencil-square text-lg cursor-pointer transition-all hover:opacity-70 "></i>
+          <i title="Delete Record" class="bi bi-trash3 text-red-600 text-lg cursor-pointer transition-all hover:opacity-70 "></i>
+        </div>
+      </div>
+      `;
+    });
+  }
+
+  calcAndUpdateTotal();
+};
+
+// ! ADD RECORD MODAL OPENING AND CLOSING
+const addRecModalEl = document.querySelector(".modal");
+const overlayEl = document.querySelector(".overlay");
+const addRecForm = document.querySelector(".addRecForm");
+const addRecBtn = document.querySelector("#addRecordBtn");
+const openModalBtn = document.querySelector("#createRecordBtn");
+
+openModalBtn.addEventListener("click", () => {
+  openModal();
+  console.log("triggered");
+});
+const openModal = () => {
+  addRecModalEl.classList.add("fade-in");
+  overlayEl.classList.add("fade-in");
+  addRecModalEl.style.display = "block"; // make the modal visible
+  overlayEl.style.display = "block"; // make the overlayEl visible
+  body.classList.toggle("no-scroll");
+
+  overlayEl.addEventListener("click", closeModal);
+};
+
+const closeModal = () => {
+  setTimeout(() => {
+    addRecBtn.innerHTML = `Add`;
+  }, 300);
+  addRecForm.reset();
+  addRecModalEl.classList.add("fade-out");
+  overlayEl.classList.add("fade-out");
+  body.classList.toggle("no-scroll");
+
+  setTimeout(() => {
+    addRecModalEl.style.display = "none"; // hide the addRecModalEl after the animation completes
+    overlayEl.style.display = "none"; // hide the overlayEl after the animation completes
+    addRecModalEl.classList.remove("fade-out");
+    overlayEl.classList.remove("fade-out");
+  }, 300); // set the timeout to match the animation duration
+};
+
+// ! ADDING RECORD
+addRecForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  addRecBtn.innerHTML = `
+  <img class="w-14" src="/images/pulse-loading.gif">
+  `;
+
+  const amount = e.target.amount.value || 0;
+
+  console.log(amount);
+
+  const { data, error } = await supabase
+    .from("sub-categories")
+    .insert({
+      category: selectedCategory.category,
+      amount: amount,
+      user_id: userId || localStorage.getItem("userId"),
+    })
+    .select("*");
+
+  if (data) {
+    Toastify({
+      text: `Record Added !`,
+      duration: 2000,
+      newWindow: false,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: false, // Prevents dismissing of toast on hover
+      style: {
+        background: bgColor,
+        color: "#fff",
+      },
+    }).showToast();
+
+    closeModal();
+    renderRecordTable();
+  } else {
+    console.error(error);
+    alert(error.message);
+  }
+});
+
+const calcAndUpdateTotal = async () => {
+  const total = records.reduce((a, b) => a + b.amount, 0);
+  console.log(total);
+  totalEl.textContent = `Total : ₦${total.toLocaleString()}`;
+
+  const { error } = await supabase
+    .from("categories")
+    .update({ total: total })
+    .eq("name", selectedCategory?.category);
+
+  error && alert(error.message);
+
+  const selectedCategoryInfo = {
+    category: selectedCategory?.category,
+    total: total,
+  };
+  localStorage.setItem(
+    "selectedCategory",
+    JSON.stringify(selectedCategoryInfo)
+  );
+};
+
+// ! CLEARING ALL RECORDS
+const clearAllRecords = async () => {
+  if (records.length > 0) {
+    records = [];
+  
+    const { error } = await supabase
+      .from("sub-categories")
+      .delete("*")
+      .eq("user_id", userId)
+      .eq("category", selectedCategory.category);
+  
+    error && alert(error.message);
+  
+    renderRecordTable(true);
+
+    Toastify({
+      text: ` All Record Deleted !`,
+      duration: 2000,
+      newWindow: false,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: false, // Prevents dismissing of toast on hover
+      style: {
+        background: bgColor,
+        color: "#fff",
+      },
+    }).showToast();
+  
+
+  } else {
+    Toastify({
+      text: `No records to clear!`,
+      duration: 2000,
+      newWindow: false,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: false, // Prevents dismissing of toast on hover
+      style: {
+        background: bgColor,
+        color: "#fff",
+      },
+    }).showToast();
+  }
+};
