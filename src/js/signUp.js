@@ -8,18 +8,8 @@ const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBseHZibnlrd3Nnd2dscHh1c2FyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzU5Nzk5OTYsImV4cCI6MTk5MTU1NTk5Nn0.4e6f--5uvLzay-Xduh0OIRF3fFK3AGHqdsAqMV6vUC0";
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// const addUserLocation = async (location, email) => {
-//     const { data, error } = await supabase
-//     .from('rr_users_location')
-//     .insert({email: email, location: location })
-//     .select('*')
 
-//     if (data) {
-//       console.log('updated user location successfully !')
-//     }
 
-//     error && console.log(error)
-//   }
 
 signUpForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -35,7 +25,7 @@ signUpForm.addEventListener("submit", async (e) => {
     email: email,
     password: password,
     options: {
-      emailRedirectTo: "http://localhost:3000/welcome.html", //! CHANGE URL
+      emailRedirectTo: "https://retailrecord.com/welcome", //! CHANGE URL
       data: {
         businessName: businessName,
         location: location,

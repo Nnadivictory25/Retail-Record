@@ -25,7 +25,7 @@ const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-        redirectTo: 'http://localhost:3000/dashboard.html' //! change url
+        redirectTo: 'https://retailrecord.com/dashboard' //! change url
         }
     })
   
@@ -56,7 +56,7 @@ loginForm.addEventListener('submit', async (e) => {
     })
     
     if (user !== null) {
-        window.location.href = "/dashboard.html"; //! CHANGE URL 
+        window.location.href = "/dashboard"; //! CHANGE URL 
       } 
     
     if (error && error.message.includes('credentials')) {

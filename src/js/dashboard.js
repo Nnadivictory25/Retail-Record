@@ -35,7 +35,7 @@ profilePic.textContent = userInitials;
     console.log(userId);
     renderDashboard();
   } else {
-    window.location.href = "/login.html"; // ! CHANGE URL
+    window.location.href = "/login"; // ! CHANGE URL
   }
 })();
 
@@ -71,7 +71,7 @@ const logOut = async () => {
   userId = null;
   localStorage.setItem("loggedUser", null);
 
-  window.location.href = "/login.html"; //! change url !!!
+  window.location.href = "/login"; //! change url !!!
 };
 
 // ! Dashboard rendering
@@ -96,7 +96,8 @@ const renderDashboard = async () => {
   const { data, error } = await supabase
     .from("categories")
     .select("*")
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .order("created_at", { ascending: true });
 
   error ? console.error(error) : console.log(data);
 
@@ -281,5 +282,5 @@ const addRecordFor = (category, total) => {
     JSON.stringify(selectedCategoryInfo)
   );
 
-  window.location.href = "/add-record.html"; //! change url!!!
+  window.location.href = "/add-record"; //! change url!!!
 };

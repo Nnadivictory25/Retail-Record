@@ -27,7 +27,7 @@ profilePic.textContent = userInitials;
     userId = user.id;
     renderRecordTable();
   } else {
-    window.location.href = "/login.html"; // ! CHANGE URL
+    window.location.href = "/login"; // ! CHANGE URL
   }
 })();
 
@@ -88,7 +88,7 @@ const renderRecordTable = async (cleared = false, fromEdit = false) => {
 
   records = data;
 
-  console.log(records);
+  // console.log(records);
 
   if (records.length === 0) {
     recordsTable.innerHTML = "";
@@ -133,7 +133,6 @@ const openModalBtn = document.querySelector("#createRecordBtn");
 
 openModalBtn.addEventListener("click", () => {
   openModal();
-  console.log("triggered");
 });
 const openModal = (fromEdit = false) => {
   const modalHeader = document.querySelector("#modalHeader");
@@ -172,11 +171,8 @@ addRecForm.addEventListener("submit", async (e, fromEdit = FROM_EDIT) => {
   addRecBtn.innerHTML = `
   <img class="w-14" src="/images/pulse-loading.gif">
   `;
-  console.log(fromEdit);
 
   const amount = e.target.amount.value || 0;
-
-  console.log(amount);
 
   if (!fromEdit) {
     const { data, error } = await supabase
@@ -241,7 +237,6 @@ addRecForm.addEventListener("submit", async (e, fromEdit = FROM_EDIT) => {
 
 const calcAndUpdateTotal = async () => {
   const total = records.reduce((a, b) => a + b.amount, 0);
-  console.log(total);
   totalEl.textContent = `Total : ₦${total.toLocaleString()}`;
 
   const { error } = await supabase
@@ -308,7 +303,6 @@ const clearAllRecords = async () => {
 
 // ! EDITING AND DELETING RECORDS
 const editRecord = async (id, amount) => {
-  console.log(id, amount);
   editedId = id;
   const modalHeader = document.querySelector("#modalHeader");
   const input = document.querySelector('input[name="amount"]');
