@@ -11,8 +11,11 @@ const body = document.querySelector("body");
 const navToggler = document.querySelector("#navToggler");
 const nav = document.querySelector(".nav");
 let navActive = false;
+let FROM_EDIT = false;
+let editedId;
 profilePic.textContent = userInitials;
 
+// ! GETTING USER
 (async () => {
   const {
     data: { user },
@@ -58,6 +61,7 @@ const recordsTable = document.querySelector(".records");
 const errMsgEl = document.querySelector(".errMsg");
 let records = [];
 
+// ! SEMI ROUTE PROTECTION
 if (selectedCategory) {
   selectedCategoryEl.innerHTML = `
   Manage record for <span class="text-blue font-bold capitalize">${selectedCategory?.category}</span>
@@ -68,12 +72,14 @@ if (selectedCategory) {
     '<p class="font-bold text-3xl text-center text-red-600 mt-20"> 404 , PAGE NOT FOUND !!</p>';
 }
 
-const renderRecordTable = async (cleared = false) => {
+// ! RENDER TABLE
+const renderRecordTable = async (cleared = false, fromEdit = false) => {
   const { data, error } = await supabase
     .from("sub-categories")
     .select("*")
     .eq("user_id", userId)
-    .eq("category", selectedCategory?.category);
+    .eq("category", selectedCategory?.category)
+    .order("created_at", { ascending: true });
 
   if (error) {
     console.log(error);
@@ -85,16 +91,12 @@ const renderRecordTable = async (cleared = false) => {
   console.log(records);
 
   if (records.length === 0) {
-    if (!cleared) {
-      recordsTable.remove();
-    } else {
-      recordsTable.innerHTML ='';
-    }
+    recordsTable.innerHTML = "";
     errMsgEl.innerHTML = `
     <p class="font-bold text-xl text-center text-blue mt-5"> No records for ${selectedCategory.category} yet</p>
     `;
   } else {
-    errMsgEl.innerHTML = '';
+    errMsgEl.innerHTML = "";
     recordsTable.innerHTML = `
       <div class="header font-bold pb-2">
         <p class="text-lg">S/N</p>
@@ -104,15 +106,15 @@ const renderRecordTable = async (cleared = false) => {
      <hr class="h-2">
     `;
     records.map((record, i) => {
-      const { amount } = record;
+      const { id, amount } = record;
 
       recordsTable.innerHTML += /* html */ `
       <div class="data pt-2">
         <p class="text-lg">${i + 1}</p>
         <p class="text-lg text-green-600 font-medium">+${amount}</p>
         <div class="flex items-center gap-x-3 mx-auto">
-          <i title="Edit Record" class="bi bi-pencil-square text-lg cursor-pointer transition-all hover:opacity-70 "></i>
-          <i title="Delete Record" class="bi bi-trash3 text-red-600 text-lg cursor-pointer transition-all hover:opacity-70 "></i>
+          <i title="Edit Record" onclick="editRecord(${id}, ${amount})" class="bi bi-pencil-square text-lg cursor-pointer transition-all hover:opacity-70 "></i>
+          <i title="Delete Record" onclick="deleteRecord(${id})" class="bi bi-trash3 text-red-600 text-lg cursor-pointer transition-all hover:opacity-70 "></i>
         </div>
       </div>
       `;
@@ -133,7 +135,10 @@ openModalBtn.addEventListener("click", () => {
   openModal();
   console.log("triggered");
 });
-const openModal = () => {
+const openModal = (fromEdit = false) => {
+  const modalHeader = document.querySelector("#modalHeader");
+  !fromEdit && (modalHeader.textContent = "Add new record");
+  fromEdit && (FROM_EDIT = true);
   addRecModalEl.classList.add("fade-in");
   overlayEl.classList.add("fade-in");
   addRecModalEl.style.display = "block"; // make the modal visible
@@ -147,6 +152,7 @@ const closeModal = () => {
   setTimeout(() => {
     addRecBtn.innerHTML = `Add`;
   }, 300);
+  FROM_EDIT = false;
   addRecForm.reset();
   addRecModalEl.classList.add("fade-out");
   overlayEl.classList.add("fade-out");
@@ -161,45 +167,75 @@ const closeModal = () => {
 };
 
 // ! ADDING RECORD
-addRecForm.addEventListener("submit", async (e) => {
+addRecForm.addEventListener("submit", async (e, fromEdit = FROM_EDIT) => {
   e.preventDefault();
   addRecBtn.innerHTML = `
   <img class="w-14" src="/images/pulse-loading.gif">
   `;
+  console.log(fromEdit);
 
   const amount = e.target.amount.value || 0;
 
   console.log(amount);
 
-  const { data, error } = await supabase
-    .from("sub-categories")
-    .insert({
-      category: selectedCategory.category,
-      amount: amount,
-      user_id: userId || localStorage.getItem("userId"),
-    })
-    .select("*");
+  if (!fromEdit) {
+    const { data, error } = await supabase
+      .from("sub-categories")
+      .insert({
+        category: selectedCategory.category,
+        amount: amount,
+        user_id: userId || localStorage.getItem("userId"),
+      })
+      .select("*");
 
-  if (data) {
-    Toastify({
-      text: `Record Added !`,
-      duration: 2000,
-      newWindow: false,
-      close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "right", // `left`, `center` or `right`
-      stopOnFocus: false, // Prevents dismissing of toast on hover
-      style: {
-        background: bgColor,
-        color: "#fff",
-      },
-    }).showToast();
+    if (data) {
+      Toastify({
+        text: `Record Added !`,
+        duration: 2000,
+        newWindow: false,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: false, // Prevents dismissing of toast on hover
+        style: {
+          background: bgColor,
+          color: "#fff",
+        },
+      }).showToast();
 
-    closeModal();
-    renderRecordTable();
+      closeModal();
+      renderRecordTable(false);
+    } else {
+      console.error(error);
+      alert(error.message);
+    }
   } else {
-    console.error(error);
-    alert(error.message);
+    const { error } = await supabase
+      .from("sub-categories")
+      .update({ amount: amount })
+      .eq("id", editedId);
+
+    if (!error) {
+      Toastify({
+        text: `Record Updated !`,
+        duration: 2000,
+        newWindow: false,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: false, // Prevents dismissing of toast on hover
+        style: {
+          background: bgColor,
+          color: "#fff",
+        },
+      }).showToast();
+
+      closeModal();
+      renderRecordTable(false, true);
+    } else {
+      console.error(error);
+      alert(error.message);
+    }
   }
 });
 
@@ -229,15 +265,15 @@ const calcAndUpdateTotal = async () => {
 const clearAllRecords = async () => {
   if (records.length > 0) {
     records = [];
-  
+
     const { error } = await supabase
       .from("sub-categories")
       .delete("*")
       .eq("user_id", userId)
       .eq("category", selectedCategory.category);
-  
+
     error && alert(error.message);
-  
+
     renderRecordTable(true);
 
     Toastify({
@@ -253,8 +289,6 @@ const clearAllRecords = async () => {
         color: "#fff",
       },
     }).showToast();
-  
-
   } else {
     Toastify({
       text: `No records to clear!`,
@@ -271,3 +305,45 @@ const clearAllRecords = async () => {
     }).showToast();
   }
 };
+
+// ! EDITING AND DELETING RECORDS
+const editRecord = async (id, amount) => {
+  console.log(id, amount);
+  editedId = id;
+  const modalHeader = document.querySelector("#modalHeader");
+  const input = document.querySelector('input[name="amount"]');
+
+  modalHeader.textContent = "Edit record";
+  input.value = amount;
+  openModal(true);
+};
+
+
+const deleteRecord = async (id) => {
+  const { error } = await supabase
+  .from("sub-categories")
+  .delete("*")
+  .eq("id", id)
+  .eq("user_id", userId)
+  
+  if (error) {
+    console.log(error);
+    alert(error.message);
+  }
+
+  Toastify({
+    text: `Record Deleted!`,
+    duration: 2000,
+    newWindow: false,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    stopOnFocus: false, // Prevents dismissing of toast on hover
+    style: {
+      background: bgColor,
+      color: "#fff",
+    },
+  }).showToast();
+
+  renderRecordTable()
+}

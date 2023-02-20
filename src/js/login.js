@@ -56,7 +56,7 @@ loginForm.addEventListener('submit', async (e) => {
     })
     
     if (user !== null) {
-        window.location.href = "/dashboard";
+        window.location.href = "/dashboard.html"; //! CHANGE URL 
       } 
     
     if (error && error.message.includes('credentials')) {

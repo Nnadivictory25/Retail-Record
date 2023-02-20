@@ -38,11 +38,11 @@
     <!-- ! MODAL -->
     <div id="addRecordModal" class="hasFade modal px-5 bg-white rounded fixed z-40 mx-auto inset-x-0 pt-2 pb-4 ">
         <div class="header">
-            <p class="text-lg font-semibold">Add a new record</p>
+            <p id="modalHeader" class="text-lg font-semibold">Add a new record</p>
         </div>
 
         <form action="#" class="addRecForm mt-5 flex flex-col gap-y-3">
-            <input id="amount" name="amount" required type="tel" class="input p-2" placeholder="Amount ₦">
+            <input id="amount" name="amount" required type="number" class="input p-2" placeholder="Amount ₦">
 
             <div class="btnCtn flex items-center justify-between mt-5">
                 <button onclick="closeModal()" class="w-[45%] h-[50px] button border border-slate-500 bg-white text-black hover:opacity-70" type="button">Cancel</button>
@@ -62,20 +62,25 @@
 
         <ul class="nav absolute bg-white rounded flex flex-col top-16 z-10" style="left: -100%;">
             <li onclick="logOut()" class="cursor-pointer hover:bg-slate-100 px-4 py-2"><i class="bi bi-power mr-2 text-lg"></i>Log Out</li>
-            <li class="cursor-pointer hover:bg-slate-100 px-4 py-2"><a href="/profile" class="hover:opacity-100"><i class="bi bi-person mr-2 text-lg"></i>Profile</a></li>
+            <li class="cursor-pointer disabled hover:bg-slate-100 px-4 py-2"><a href="/profile" class="hover:opacity-100"><i class="bi bi-person mr-2 text-lg"></i>Profile</a></li>
         </ul>
     </nav>
 
     <p id="selectedRecordEl" class="text-xl font-semibold mt-8">Manage record for <span class="loading-state text-object inline-block w-24"></span></p>
 
     <div id="recordInfo" class="flex items-center justify-between mt-5">
-        <p id="catTotal" class="font-semibold text-xl text-slate-700">Total : 8000</p>
+        <p id="catTotal" class="font-semibold text-xl text-slate-700"></p>
         <p onclick="clearAllRecords()" class="underline text-blue font-medium cursor-pointer transition-all hover:opacity-75  ">Clear All</p>
     </div>
 
-    <button id="createRecordBtn" class="bg-blue text-white rounded px-2 py-1 font-medium mt-5 transition-all hover:opacity-75"><i class="bi bi-clipboard-plus mr-1"></i> Create New Record</button>
+    <div class="actionBtns mt-5 flex items-center justify-between">
+        <button id="createRecordBtn" class="bg-blue text-white rounded px-2 py-1 font-medium transition-all hover:opacity-75"><i class="bi bi-clipboard-plus mr-1"></i> Create New Record</button>
 
-    <section class="records mt-7 bg-slate-50 py-2 rounded">
+        <a href="/dashboard.html" id="goBackBtn" class="bg-blue-200 text-black rounded p-2 font-normal text-sm transition-all hover:opacity-75">
+            <i class="bi bi-arrow-left-circle"></i> Go back</a>
+    </div>
+
+    <section class="records mt-7 bg-slate-50 py-2 rounded mb-5">
         <div class="header font-bold pb-2">
             <p class="text-lg">S/N</p>
             <p class="text-lg">Amount</p>

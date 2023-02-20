@@ -155,3 +155,8 @@
 .fade-out {
     animation-name: fadeOut;
 }
+
+.disabled {
+    pointer-events: none;
+    opacity: .3 !important;
+}

@@ -6,34 +6,34 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const navToggler = document.querySelector("#navToggler");
 const nav = document.querySelector(".nav");
 const body = document.querySelector("body");
-const profilePic = document.querySelector('#profilePic')
+const profilePic = document.querySelector("#profilePic");
 const userInitials = localStorage.getItem("userInitials");
 let loggedUser = null;
-const bgColor = `hsl(216, 93%, 44%)` // for toastify
+const bgColor = `hsl(216, 93%, 44%)`; // for toastify
 let userId;
 let navActive = false;
 
-
-localStorage.removeItem("selectedCategory")
+localStorage.removeItem("selectedCategory");
 profilePic.textContent = userInitials;
 
-
-(async () => { const { data: { user } } = await supabase.auth.getUser()
+(async () => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (user) {
     console.log(user);
     loggedUser = user;
-    localStorage.setItem("userInitials", user.user_metadata.businessName[0])
+    localStorage.setItem("userInitials", user.user_metadata.businessName[0]);
     userId = loggedUser.id;
     localStorage.setItem("userId", userId);
     localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
-    
 
     loadName?.remove();
     welcomeMsgEl.innerHTML += `
         <p id="bussinessName" class="text-xl">${loggedUser.user_metadata.businessName}</p>
         `;
-        console.log(userId);
-        renderDashboard();
+    console.log(userId);
+    renderDashboard();
   } else {
     window.location.href = "/login.html"; // ! CHANGE URL
   }
@@ -71,7 +71,6 @@ const logOut = async () => {
   userId = null;
   localStorage.setItem("loggedUser", null);
 
-
   window.location.href = "/login.html"; //! change url !!!
 };
 
@@ -105,7 +104,7 @@ const renderDashboard = async () => {
 
   if (categories.length === 0) {
     loadingDashboard?.remove();
-    document.querySelector('.dashboard__salesSummary')?.remove()
+    document.querySelector(".dashboard__salesSummary")?.remove();
     dashboardEl.innerHTML += `
         <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
             <p class="text-xl font-medium">Total Sales</p>
@@ -115,7 +114,7 @@ const renderDashboard = async () => {
         `;
   } else {
     loadingDashboard?.remove();
-    document.querySelector('.dashboard__salesSummary')?.remove()
+    document.querySelector(".dashboard__salesSummary")?.remove();
     const total = categories.reduce((a, b) => a + b.total, 0);
     dashboardEl.innerHTML += `
         <div class="dashboard__salesSummary bg-blue text-white rounded lg:px-10 px-5 py-3 mt-5 lg:mt-0 shadow-md">
@@ -147,7 +146,7 @@ const renderCategories = async () => {
                 <p class="thisSales"><span class="text-sm">₦</span>${total.toLocaleString()}</p>
             </div>
             <i title="Add Record" onclick="addRecordFor('${name}', ${total})" class="bi bi-plus-lg absolute right-5 text-black bg-white rounded-full px-2 py-1 text-xl top-[30%] transition-all hover:bg-slate-200 cursor-pointer"></i>
-            <i onclick="deleteCategory(${id})" title="Delete Category" class="bi bi-x-circle-fill absolute top-[-.5rem] text-white rounded-full px-1 bg-opacity-40 bg-black right-[-.4rem] transition-all hover:bg-opacity-60 cursor-pointer"></i>
+            <i onclick="deleteCategory(${id}, '${name}')" title="Delete Category" class="bi bi-x-circle-fill absolute top-[-.5rem] text-white rounded-full px-1 bg-opacity-40 bg-black right-[-.4rem] transition-all hover:bg-opacity-60 cursor-pointer"></i>
         </div>  
           `;
     });
@@ -158,7 +157,7 @@ const renderCategories = async () => {
 const addCategoryModalEl = document.querySelector(".modal");
 const overlayEl = document.querySelector(".overlay");
 const addCategoryForm = document.querySelector(".addCatForm");
-const addCatBtn = document.querySelector('#addCatBtn')
+const addCatBtn = document.querySelector("#addCatBtn");
 
 const openModal = () => {
   addCategoryModalEl.classList.add("fade-in");
@@ -167,7 +166,6 @@ const openModal = () => {
   overlayEl.style.display = "block"; // make the overlayEl visible
   body.classList.toggle("no-scroll");
 
-
   overlayEl.addEventListener("click", closeModal);
 };
 
@@ -175,7 +173,7 @@ const closeModal = () => {
   setTimeout(() => {
     addCatBtn.innerHTML = `Add`;
   }, 300);
-  addCategoryForm.reset()
+  addCategoryForm.reset();
   addCategoryModalEl.classList.add("fade-out");
   overlayEl.classList.add("fade-out");
   body.classList.toggle("no-scroll");
@@ -209,7 +207,6 @@ addCategoryForm.addEventListener("submit", async (e) => {
     })
     .select("*");
 
-  
   if (data) {
     closeModal();
 
@@ -222,11 +219,11 @@ addCategoryForm.addEventListener("submit", async (e) => {
       position: "right", // `left`, `center` or `right`
       stopOnFocus: false, // Prevents dismissing of toast on hover
       style: {
-          background: bgColor,
-          color: '#fff',
+        background: bgColor,
+        color: "#fff",
       },
     }).showToast();
-    
+
     renderDashboard();
   } else {
     console.error(error);
@@ -234,42 +231,55 @@ addCategoryForm.addEventListener("submit", async (e) => {
   }
 });
 
-
 // ! DELETING CATEGORY
-const deleteCategory = async (id) => {
-  const { error } = await supabase
-  .from("categories")
-  .delete()
-  .eq("id", id)
-  
+const deleteCategory = async (id, name) => {
+  const { error } = await supabase.from("categories").delete().eq("id", id);
+
   error && console.error(error);
 
-  !error && Toastify({
-    text: `Category Deleted !`,
-    duration: 2000,
-    newWindow: false,
-    close: true,
-    gravity: "top", // `top` or `bottom`
-    position: "right", // `left`, `center` or `right`
-    stopOnFocus: false, // Prevents dismissing of toast on hover
-    style: {
+  !error &&
+    Toastify({
+      text: `Category Deleted !`,
+      duration: 2000,
+      newWindow: false,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: false, // Prevents dismissing of toast on hover
+      style: {
         background: bgColor,
-        color: '#fff',
-    },
-  }).showToast();
+        color: "#fff",
+      },
+    }).showToast();
 
-  renderDashboard()
-}
+  deleteSubCategory(name)
+  renderDashboard();
+};
 
+// ! DELETING FROM SUB-CATEGORY WHEN THE CATEGORY IS DELETED
+const deleteSubCategory = async (nameOfCat) => {
+  const { error } = await supabase
+    .from("sub-categories")
+    .delete("*")
+    .eq("category", nameOfCat)
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error(error);
+    alert(error.message);
+  }
+};
 
 // ! ADDING RECORD (PART 1)
 const addRecordFor = (category, total) => {
   const selectedCategoryInfo = {
     category: category,
     total: total,
-  }
-  localStorage.setItem('selectedCategory', JSON.stringify(selectedCategoryInfo));
+  };
+  localStorage.setItem(
+    "selectedCategory",
+    JSON.stringify(selectedCategoryInfo)
+  );
 
   window.location.href = "/add-record.html"; //! change url!!!
-
-}
+};
