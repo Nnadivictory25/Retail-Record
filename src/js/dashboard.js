@@ -194,7 +194,7 @@ addCategoryForm.addEventListener("submit", async (e) => {
   <img class="w-14" src="/images/pulse-loading.gif">
   `;
 
-  const categoryName = e.target.name.value;
+  const categoryName = e.target.name.value.trim()
   const total = e.target.total.value || 0;
 
   console.log(categoryName, total);
