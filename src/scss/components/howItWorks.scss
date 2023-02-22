@@ -1,0 +1,36 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+@use '../util/mixins.scss' as *;
+
+
+.howItWorks {
+
+    .stepCtn {
+        display: grid;
+        margin-top: 1rem;
+        
+
+        @include breakpoint-up(medium) {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        video {
+            outline: 1px solid rgb(17, 17, 235);
+        }
+
+        &:nth-child(odd) {
+
+            @include breakpoint-up(medium) {
+                display: flex;
+
+                video {
+                    width: 50%;
+                }
+
+                .writeUp {
+                    order: 2;
+                }
+            }
+        }
+    }
+}

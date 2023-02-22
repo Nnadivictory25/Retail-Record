@@ -3,9 +3,13 @@ const heroText = document.querySelector(".hero__text");
 const inputs = Array.from(document.querySelectorAll(".input"));
 const btn = document.querySelector("button");
 const words = ["more efficient", "faster", "easier"];
+const videos = Array.from(document.querySelectorAll("video"));
 let count = 0;
 
 
+videos.forEach((video) => {
+  video.classList.add('shadow-md')
+})
 function changeWord() {
   if (count === words.length) {
     count = 0;
