@@ -356,6 +356,7 @@ const deleteRecord = async (id) => {
   renderRecordTable()
 }
 
+// ! FORM VALIDATION
 const validateInput = () => {
   const btn = document.querySelector('#addRecordBtn');
   const input = document.querySelector('input[name="amount"]');
