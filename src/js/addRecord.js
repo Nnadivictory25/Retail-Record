@@ -130,6 +130,8 @@ const overlayEl = document.querySelector(".overlay");
 const addRecForm = document.querySelector(".addRecForm");
 const addRecBtn = document.querySelector("#addRecordBtn");
 const openModalBtn = document.querySelector("#createRecordBtn");
+const input = document.querySelector("input[name='amount']");
+
 
 openModalBtn.addEventListener("click", () => {
   openModal();
@@ -148,6 +150,7 @@ const openModal = (fromEdit = false) => {
 };
 
 const closeModal = () => {
+  input.setAttribute("oninput", "validateInput()")
   setTimeout(() => {
     addRecBtn.innerHTML = `Add`;
   }, 300);
@@ -306,9 +309,20 @@ const editRecord = async (id, amount) => {
   editedId = id;
   const modalHeader = document.querySelector("#modalHeader");
   const input = document.querySelector('input[name="amount"]');
+  const btn = document.querySelector('#addRecordBtn')
 
+  input.removeAttribute("oninput")
+  btn.textContent = "Update";
+  btn.disabled = true
   modalHeader.textContent = "Edit record";
   input.value = amount;
+  input.addEventListener('keyup', (e) => {
+    if (+e.target.value !== amount) {
+      btn.disabled = false;
+    } else {
+      btn.disabled = true;
+    }
+  })
   openModal(true);
 };
 
@@ -341,3 +355,13 @@ const deleteRecord = async (id) => {
 
   renderRecordTable()
 }
+
+const validateInput = () => {
+  const btn = document.querySelector('#addRecordBtn');
+  const input = document.querySelector('input[name="amount"]');
+  if (input.value == "") {
+    btn.disabled = true;
+  } else {
+    btn.disabled = false;
+  }
+};

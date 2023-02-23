@@ -42,11 +42,11 @@
         </div>
 
         <form action="#" class="addRecForm mt-5 flex flex-col gap-y-3">
-            <input id="amount" name="amount" required type="number" class="input p-2" placeholder="Amount ₦">
+            <input id="amount" oninput="validateInput()" name="amount" required type="number" class="input p-2" placeholder="Amount ₦">
 
             <div class="btnCtn flex items-center justify-between mt-5">
                 <button onclick="closeModal()" class="w-[45%] h-[50px] button border border-slate-500 bg-white text-black hover:opacity-70" type="button">Cancel</button>
-                <button id="addRecordBtn" class="button w-[45%] h-[50px] hover:opacity-70" type="submit">Add</button>
+                <button disabled id="addRecordBtn" class="button w-[45%] h-[50px] hover:opacity-70" type="submit">Add</button>
             </div>
         </form>
     </div>
