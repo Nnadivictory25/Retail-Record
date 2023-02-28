@@ -93,7 +93,7 @@ const renderRecordTable = async (cleared = false, fromEdit = false) => {
   if (records.length === 0) {
     recordsTable.innerHTML = "";
     errMsgEl.innerHTML = `
-    <p class="font-bold text-xl text-center text-blue mt-5"> No records for ${selectedCategory.category} yet</p>
+    <p class="font-bold text-xl text-center mt-5"> No records for <span class="text-blue uppercase italic">${selectedCategory.category}</span> yet</p>
     `;
   } else {
     errMsgEl.innerHTML = "";
