@@ -1,5 +1,5 @@
 # Retail-Record
-A web application/tool to help physical store retailers to keep record of their product sales.
+A web application and tool to help physical store retailers to keep record of their product sales.
 
 ## Built with 
 - Tailwind CSS
